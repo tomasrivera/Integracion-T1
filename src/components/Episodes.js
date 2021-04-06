@@ -34,8 +34,6 @@ export default function Episodes(props) {
       .then(res => res.json())
       .then(res => setRes(res[0]))
   }, [id]);
-    // .then(console.log)
-  // console.log(title)
   const classes = useStyles();
 
   if (!res) {

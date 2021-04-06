@@ -41,13 +41,10 @@ export default function Character(props) {
     fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?name=${name.replace(" ", "+")}`)
       .then(res => res.json())
       .then(res => {
-          console.log(res)
           return res
       })
       .then(res => setRes(res[0]))
   }, [name]);
-    // .then(console.log)
-  // console.log(title)
   const classes = useStyles();
 
   if (!res) {

@@ -31,10 +31,10 @@ class App extends React.Component {
                 <Route exact path="/">
                   <Home />
                 </Route>
-                <Route path="/breakingBad/:season">
+                <Route path="/breakingBad/:season?">
                   <Serie name="Breaking Bad" />
                 </Route>
-                <Route path="/betterCallSaul/:season">
+                <Route path="/betterCallSaul/:season?">
                   <Serie name="Better Call Saul" />
                 </Route>
                 <Route path="/episodes/:id">

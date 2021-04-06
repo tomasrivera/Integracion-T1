@@ -6,7 +6,6 @@ import Serie from './Serie';
 function SerieWrap(props) {
 
     const { season } = useParams();
-
     return (
         <div>
             <Serie {...props} season={season} />

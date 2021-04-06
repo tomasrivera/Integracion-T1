@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
+import SearchBox from './searchBox';
 import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -79,19 +80,24 @@ const useStyles = makeStyles((theme) => ({
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [searchName, setSearchName] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
   useEffect(() => {
-
-    fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?name=${searchName.replace(" ", "+")}`)
-      .then(res => res.json())
-      .then(res => {
-          console.log(res)
-          return res
-      })
-      // .then(res => setSearchName(res[0]))
+    if (searchName) {
+      fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?name=${searchName.replace(" ", "+")}`)
+        .then(res => res.json())
+        // .then(res => {
+        //     console.log(res)
+        //     return res
+        // })
+        .then(res => setSearchResult(res))
+    } else {
+      setSearchResult([])
+    }
   }, [searchName]);
+  const container = React.createRef();
   
   return (
-    <div className={classes.grow}>
+    <div className={classes.grow} ref={container}>
       <AppBar position="static" style={{ background: '#5b8a72' }}>
         <Toolbar>
             
@@ -125,6 +131,7 @@ export default function PrimarySearchAppBar() {
           </div>
         </Toolbar>
       </AppBar>
+      <SearchBox refC={container} data={searchResult}></SearchBox>
     </div>
   );
 };

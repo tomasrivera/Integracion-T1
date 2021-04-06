@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ControlledAccordions(props) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(`panel${props.season}`);
+  const [expanded, setExpanded] = React.useState(props.season ? `panel${props.season}` : false);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -51,9 +51,9 @@ export default function ControlledAccordions(props) {
     )
   }
   // handleChange(`panel${key}`)
-  if (props.season) {
-    handleChange(`panel${props.season}`)
-  }
+  // if (props.season) {
+  //   handleChange(`panel${props.season}`)
+  // }
 
 
   return (
