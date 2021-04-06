@@ -16,7 +16,6 @@ class Serie extends React.Component {
         .then(res => res.json())
         .then(
           (result) => {
-            console.log(result)
             const episodesArray = result
               .filter((episode) => episode.series === name)
             const seasons = {};
@@ -44,15 +43,14 @@ class Serie extends React.Component {
   
     render() {
         const {isLoaded, seasons} = this.state;
-        console.log("render")
-        const {name} = this.props;
+        const {name, season} = this.props;
         if (!isLoaded) {
           return <p>Loading</p>
         }
         return (
           <div>
             <h2>{name}</h2>
-            <Acordeon seasons={seasons}></Acordeon>
+            <Acordeon seasons={seasons} season={season}></Acordeon>
           </div>
         );
     }

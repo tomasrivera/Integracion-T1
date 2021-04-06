@@ -24,22 +24,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ControlledAccordions(props) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(`panel${props.season}`);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  console.log(props)
+  
 
   const table = [];
   for (let [key, value] of Object.entries(props.seasons)) {
-    console.log(key, value)
     table.push(
       <div className={classes.root}>
         <Accordion expanded={expanded === `panel${key}`} onChange={handleChange(`panel${key}`)}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
+            aria-controls={`panel${key}bh-content`}
             id="panel1bh-header"
           >
             <Typography className={classes.heading}>{`Temporada ${key}`}</Typography>
@@ -50,6 +49,10 @@ export default function ControlledAccordions(props) {
         </Accordion>
       </div>
     )
+  }
+  // handleChange(`panel${key}`)
+  if (props.season) {
+    handleChange(`panel${props.season}`)
   }
 
 

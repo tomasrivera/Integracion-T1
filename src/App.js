@@ -7,7 +7,8 @@ import {
 } from "react-router-dom";
 import AppBar from './components/AppBar';
 import Episodes from "./components/Episodes"
-import Serie from "./components/Serie"
+import Serie from "./components/SerieWrap"
+import Character from "./components/Character"
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -25,28 +26,22 @@ class App extends React.Component {
         <Router>
           <AppBar/>
           <div>
-            {/* <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/episodes">Episodes</Link>
-              </li>
-            </ul>
-            <hr/> */}
             <Container>
               <Switch>
                 <Route exact path="/">
                   <Home />
                 </Route>
-                <Route path="/breakingBad">
+                <Route path="/breakingBad/:season">
                   <Serie name="Breaking Bad" />
                 </Route>
-                <Route path="/betterCallSaul">
+                <Route path="/betterCallSaul/:season">
                   <Serie name="Better Call Saul" />
                 </Route>
-                <Route path="/episodes">
+                <Route path="/episodes/:id">
                   <Episodes />
+                </Route>
+                <Route path="/character/:name">
+                  <Character />
                 </Route>
               </Switch>
             </Container>

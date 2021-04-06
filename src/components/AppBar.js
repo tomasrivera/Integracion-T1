@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -78,6 +78,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
+  const [searchName, setSearchName] = useState("");
+  useEffect(() => {
+
+    fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?name=${searchName.replace(" ", "+")}`)
+      .then(res => res.json())
+      .then(res => {
+          console.log(res)
+          return res
+      })
+      // .then(res => setSearchName(res[0]))
+  }, [searchName]);
   
   return (
     <div className={classes.grow}>
@@ -108,10 +119,12 @@ export default function PrimarySearchAppBar() {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              value={searchName}
+              onChange={event => setSearchName(event.target.value)}
             />
           </div>
         </Toolbar>
       </AppBar>
     </div>
   );
-}
+};
