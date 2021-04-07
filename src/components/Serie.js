@@ -23,7 +23,7 @@ class Serie extends React.Component {
               if (!seasons[episode.season]) {
                   seasons[episode.season] = []
               }
-              seasons[episode.season] = [...seasons[episode.season], {id: episode.episode_id, name: episode.title, episode: episode.episode}]
+              seasons[episode.season] = [...seasons[episode.season], {id: episode.episode_id, name: episode.title, episode: episode.episode, air_date: episode.air_date}]
             })
 
             this.setState({

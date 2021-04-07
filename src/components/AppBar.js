@@ -83,12 +83,23 @@ export default function PrimarySearchAppBar() {
   const [searchResult, setSearchResult] = useState([]);
   const [show, setShow] = useState(false);
   useEffect(() => {
+    let isCurrent = true;
     if (searchName) {
-      fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?name=${searchName.replace(" ", "+")}`)
-        .then(res => res.json())
-        .then(res => setSearchResult(res))
+
+      // setSearchResult(fetchSearch(searchName))
+      fetchSearch(searchName)
+        // .then(res => res.json())
+        .then(res => {
+          if (isCurrent) {
+            setSearchResult(res[0])
+          }
+        }
+          )
     } else {
       setSearchResult([])
+    }
+    return () => {
+      isCurrent = false;
     }
   }, [searchName]);
     
@@ -164,3 +175,22 @@ const handleClickOutside = (event, container, set, open) => {
       set(true)
   }
 };
+
+async function fetchSearch(searchName) {
+  let ready = false;
+  let count = 0;
+  let fullRes = [];
+  while (!ready) {
+
+    const newRes = await fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?name=${searchName.replace(" ", "+")}&offset=${10*count}`)
+    const json = await newRes.json();
+    fullRes = [...fullRes, ...json]
+    if (json.length < 10) {
+      ready = true;
+    }
+    count++;
+  }
+    // .then(res => res.json())
+
+  return [fullRes, searchName];
+}

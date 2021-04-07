@@ -52,10 +52,6 @@ export default function Character(props) {
       .then(res => setRes(res[0]))
     fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/quote?author=${name.replace(" ", "+")}`)
       .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        return res
-      })
       .then(res => setQuotes(res))
   }, [name]);
   const classes = useStyles();

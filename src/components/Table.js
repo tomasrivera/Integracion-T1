@@ -29,10 +29,19 @@ export default function DenseTable(props) {
                     {row.name}
                 </Link>
                 </TableCell>
+                <TableCell component="th" scope="row">
+                    {textDate(row.air_date)}
+                </TableCell>
                 </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
+}
+
+function textDate(timestamp) {
+  const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+  const date = new Date(timestamp);
+  return `${date.getDate() + 1} de ${months[date.getMonth()]}, ${date.getFullYear()}`
 }
