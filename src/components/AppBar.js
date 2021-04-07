@@ -81,23 +81,31 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
   const [searchName, setSearchName] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     if (searchName) {
       fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?name=${searchName.replace(" ", "+")}`)
         .then(res => res.json())
-        // .then(res => {
-        //     console.log(res)
-        //     return res
-        // })
         .then(res => setSearchResult(res))
     } else {
       setSearchResult([])
     }
   }, [searchName]);
+    
   const container = React.createRef();
+  useEffect(() => {
+    const handle = (event) => handleClickOutside(event, container, setShow, show);
+    // subscribe event
+    document.addEventListener("click", handle);
+    return () => {
+      // unsubscribe event
+      document.removeEventListener("click", handle);
+    };
+  });
+
   
   return (
-    <div className={classes.grow} ref={container}>
+    <div className={classes.grow}>
       <AppBar position="static" style={{ background: '#5b8a72' }}>
         <Toolbar>
             
@@ -114,24 +122,45 @@ export default function PrimarySearchAppBar() {
             Tarea 1
           </Typography>
         <div className={classes.grow} />
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+
+        <div>
+            <div className={classes.search} ref={container}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+                value={searchName}
+                onChange={event => onChangeHandle(event.target.value, setSearchName, setShow)}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              value={searchName}
-              onChange={event => setSearchName(event.target.value)}
-            />
-          </div>
+          <SearchBox data={searchResult} show={show} setShow={setShow}></SearchBox>
+        </div>
+        
         </Toolbar>
       </AppBar>
-      <SearchBox refC={container} data={searchResult}></SearchBox>
     </div>
   );
+};
+
+function onChangeHandle(value, setName, setShow) {
+  setName(value);
+  if (value) {
+    setShow(true)
+  } else {
+    setShow(false)
+  }
+}
+
+const handleClickOutside = (event, container, set, open) => {
+  if (container.current && !container.current.contains(event.target)) {
+      set(false)
+  } else if (container.current && container.current.contains(event.target)) {
+      set(true)
+  }
 };

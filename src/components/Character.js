@@ -37,15 +37,32 @@ const useStyles = makeStyles({
 export default function Character(props) {
   let { name } = useParams();
   const [res, setRes] = useState(0);
+  const [found, setFound] = useState(true);
+  const [quotes, setQuotes] = useState([]);
   useEffect(() => {
     fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?name=${name.replace(" ", "+")}`)
       .then(res => res.json())
+      .then(res => res.length > 1 ? [] : res)
       .then(res => {
-          return res
+        if (res.length === 0) {
+          setFound(false)
+        }
+        return res
       })
       .then(res => setRes(res[0]))
+    fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/quote?author=${name.replace(" ", "+")}`)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        return res
+      })
+      .then(res => setQuotes(res))
   }, [name]);
   const classes = useStyles();
+
+  if (!found) {
+    return <h2>No encontrado</h2>
+  }
 
   if (!res) {
     return <h2>Loading</h2>
@@ -80,9 +97,10 @@ export default function Character(props) {
               <Typography variant="body2" component="p">
                 Estado: {res.status}
               </Typography>
-              <Typography variant="body2" component="p">
+              <br></br>
+              {(res.appearance.length > 0) && <Typography variant="body2" component="p">
                 Temporadas Breaking Bad:
-              </Typography>
+              </Typography>}
               {res.appearance.map((num) =>
               <Typography variant="body2" component="p">
                   {"- "}
@@ -91,9 +109,9 @@ export default function Character(props) {
                   </Link>
               </Typography>
                 )}
-                <Typography variant="body2" component="p">
+                {(res.better_call_saul_appearance.length > 0) && <Typography variant="body2" component="p">
                 Temporadas Better Call Saul:
-              </Typography>
+              </Typography>}
               {res.better_call_saul_appearance.map((num) =>
               <Typography variant="body2" component="p">
                   {"- "}
@@ -102,6 +120,15 @@ export default function Character(props) {
                   </Link>
               </Typography>
                 )}
+              <br></br>
+              <Typography className={classes.pos} color="textSecondary">
+                Citas:
+              </Typography>
+              {quotes.map((quote) =>
+              <Typography variant="body2" component="p">
+                  {"- "}
+                  {quote.quote}
+              </Typography>)}
             </CardContent>
           </Card>
           </div>

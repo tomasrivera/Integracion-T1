@@ -1,4 +1,3 @@
-import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
@@ -8,6 +7,7 @@ import {Link} from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     container: {
         position: 'absolute',
+        top: 70,
         right: 0,
         height: 'auto',
         width: '50%',
@@ -28,13 +28,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function TextBox(props) {
-    console.log(props.refC)
     const {data} = props;
     const classes = useStyles();
-    const [open, setOpen] = useState(true);
+    // const [open, setOpen] = useState(true);
     const res = data.map((char) => {
         return(
-            <Link to={`/character/${char.name}`}>
+            <Link to={`/character/${char.name}`} onClick={() => props.setShow(false)}>
                 <div className={classes.character}>
                     <Avatar className={classes.avatar} alt={char.name} src={char.img} />
                     <Typography className={classes.text} variant="h6" noWrap>
@@ -54,7 +53,11 @@ export default function TextBox(props) {
     //     };
     //   }, [props.refC, open]);
 
-    if (!open) {
+    // if (!open) {
+    //     return <div></div>
+    // }
+
+    if (!props.show) {
         return <div></div>
     }
     return (
@@ -64,13 +67,3 @@ export default function TextBox(props) {
     )
 }
 
-const handleClickOutside = (event, container, set, open) => {
-    console.log("click", open, container.current)
-    if (open && container.current && !container.current.contains(event.target)) {
-        console.log("press outside false")
-        set(false)
-    } else if (!open || (container.current && container.current.contains(event.target))) {
-        console.log("press outside true")
-        set(true)
-    }
-  };
